@@ -12,6 +12,7 @@ import cz.novotm60.views.ClientsView;
 import cz.novotm60.views.LoginView;
 import cz.novotm60.views.NewRequirementView;
 import cz.novotm60.views.RequirementsView;
+import cz.novotm60.views.handlers.LogoutView;
 
 import javax.inject.Inject;
 
@@ -32,41 +33,25 @@ public class IndexController extends UI {
     @Inject
     LoginView loginView;
 
+    @Inject
+    LogoutView logoutView;
+
     Navigator navigator;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
         if(SessionHandler.isLoggedIn()) {
-            /*String uriFragment = UI.getCurrent().getPage().getUriFragment();
-            if(uriFragment == null) {
-                setContent(clientsView);
-                UI.getCurrent().getPage().setUriFragment("clients");
-                return;
-            }
-            switch (uriFragment) {
-                case Utils.CLIENT_URI_FRAGMENT:
-                    setContent(clientsView);
-                    break;
-                case Utils.NEW_REQ_URI_FRAGMENT:
-                    setContent(newRequirementView);
-                    break;
-                case Utils.REQ_URI_FRAGMENT:
-                    setContent(requirementsView);
-                    break;
-                default:
-                    setContent(clientsView);
-                    UI.getCurrent().getPage().setUriFragment("clients");
-                    break;
-            }*/
             navigator = new Navigator(this, this);
             navigator.addView(Utils.DEFAULT_URI_FRAGMENT, clientsView);
             navigator.addView(Utils.CLIENT_URI_FRAGMENT, clientsView);
             navigator.addView(Utils.NEW_REQ_URI_FRAGMENT, newRequirementView);
             navigator.addView(Utils.REQ_URI_FRAGMENT, requirementsView);
+            navigator.addView(Utils.LOGOUT_URI_FRAGMENT, logoutView);
             navigator.setErrorView(clientsView);
             //setContent(clientsView);
         }else {
+            Utils.removeLogoutFragment();
             setContent(loginView);
         }
 

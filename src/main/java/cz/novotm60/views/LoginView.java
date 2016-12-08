@@ -6,6 +6,7 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import cz.novotm60.session.SessionHandler;
+import cz.novotm60.util.Utils;
 
 public class LoginView extends MyView {
 
@@ -66,6 +67,7 @@ public class LoginView extends MyView {
         passwordField.setWidth("100%");
         vl.addComponent(passwordField);
         Button login = new Button("Login", clickEvent -> {
+            Utils.removeLogoutFragment();
             try {
                 usernameField.validate();
                 passwordField.validate();

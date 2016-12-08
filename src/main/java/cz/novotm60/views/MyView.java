@@ -1,10 +1,12 @@
 package cz.novotm60.views;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import cz.novotm60.views.handlers.NavigationHandler;
 
-public abstract class MyView extends Panel implements IView{
+public abstract class MyView extends Panel implements View, IView{
 
     public MyView() {
         this.setSizeFull();
@@ -67,5 +69,10 @@ public abstract class MyView extends Panel implements IView{
         hr.addComponent(copyright);
         hr.setComponentAlignment(copyright, Alignment.MIDDLE_CENTER);
         return hr;
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
     }
 }

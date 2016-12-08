@@ -28,6 +28,7 @@ public class NavigationHandler {
         navigator.addView(Utils.CLIENT_URI_FRAGMENT, new ClientsView());
         navigator.addView(Utils.NEW_REQ_URI_FRAGMENT, new NewRequirementView());
         navigator.addView(Utils.REQ_URI_FRAGMENT, new RequirementsView());
+        navigator.addView(Utils.LOGOUT_URI_FRAGMENT, new LogoutView());
         navigator.setErrorView(new ClientsView());
     }
 

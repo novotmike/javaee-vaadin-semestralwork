@@ -1,0 +1,6 @@
+@import "../valo/valo";
+
+@mixin mytheme {
+  @include valo;
+
+}

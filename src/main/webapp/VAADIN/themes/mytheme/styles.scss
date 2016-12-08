@@ -1,0 +1,8 @@
+@import "./mytheme";
+@import "./addons";
+
+.mytheme {
+  @include addons;
+  @include mytheme;
+
+}

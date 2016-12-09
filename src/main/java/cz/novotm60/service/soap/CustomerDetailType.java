@@ -1,4 +1,4 @@
-package cz.novotm60.model.entity;
+package cz.novotm60.service.soap;
 
 import java.util.ArrayList;
 import java.util.List;

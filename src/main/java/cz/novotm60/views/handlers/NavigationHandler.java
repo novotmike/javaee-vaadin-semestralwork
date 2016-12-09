@@ -4,6 +4,7 @@ import com.vaadin.ui.UI;
 import cz.novotm60.session.SessionHandler;
 import cz.novotm60.util.Utils;
 import cz.novotm60.views.ClientsView;
+import cz.novotm60.views.LogoutView;
 import cz.novotm60.views.NewRequirementView;
 import cz.novotm60.views.RequirementsView;
 

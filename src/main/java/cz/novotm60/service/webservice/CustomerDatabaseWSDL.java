@@ -1,8 +1,8 @@
 package cz.novotm60.service.webservice;
 
 import cz.novotm60.factory.ObjectFactory;
-import cz.novotm60.model.entity.CustomerDetailType;
-import cz.novotm60.model.entity.CustomerType;
+import cz.novotm60.service.soap.CustomerDetailType;
+import cz.novotm60.service.soap.CustomerType;
 import cz.novotm60.service.soap.CreateCustomerChangeOrder;
 
 import javax.jws.WebMethod;

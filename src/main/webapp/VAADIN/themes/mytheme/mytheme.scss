@@ -1,6 +1,11 @@
 @import "../valo/valo";
 
 @mixin mytheme {
+
+  $v-font-family: Roboto, sans-serif;
+  $v-font-weight: 400;
+  $v-font-weight--header: 400;
+
   @include valo;
 
 }

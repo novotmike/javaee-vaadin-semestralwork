@@ -1,7 +1,5 @@
 package cz.novotm60.service.soap;
 
-import cz.novotm60.model.entity.CustomerType;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;

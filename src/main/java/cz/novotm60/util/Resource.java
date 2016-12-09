@@ -1,18 +1,20 @@
 package cz.novotm60.util;
 
+import cz.novotm60.model.entity.ChangeOrder;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-//@ApplicationScoped
+@ApplicationScoped
 public class Resource {
 
-    //@PersistenceContext
+    @PersistenceContext
+    @Produces
     private EntityManager em;
 
-    //@Produces
-    public EntityManager getEntityManager() {
-        return em;
+    public void hmm() {
+
     }
 }

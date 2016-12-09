@@ -12,7 +12,7 @@ import cz.novotm60.views.ClientsView;
 import cz.novotm60.views.LoginView;
 import cz.novotm60.views.NewRequirementView;
 import cz.novotm60.views.RequirementsView;
-import cz.novotm60.views.handlers.LogoutView;
+import cz.novotm60.views.LogoutView;
 
 import javax.inject.Inject;
 

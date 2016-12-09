@@ -1,9 +1,9 @@
 package cz.novotm60.factory;
 
-import cz.novotm60.model.entity.AddressType;
-import cz.novotm60.model.entity.CustomerDetailType;
-import cz.novotm60.model.entity.CustomerType;
-import cz.novotm60.model.entity.PhoneType;
+import cz.novotm60.service.soap.AddressType;
+import cz.novotm60.service.soap.CustomerDetailType;
+import cz.novotm60.service.soap.CustomerType;
+import cz.novotm60.service.soap.PhoneType;
 import cz.novotm60.service.soap.*;
 
 import javax.xml.bind.JAXBElement;

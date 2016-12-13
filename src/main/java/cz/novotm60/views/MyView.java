@@ -6,7 +6,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import cz.novotm60.views.handlers.NavigationHandler;
 
-public abstract class MyView extends Panel implements View, IView{
+public class MyView extends Panel implements View, IView{
 
     public MyView() {
         this.setSizeFull();

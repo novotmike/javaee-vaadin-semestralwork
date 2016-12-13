@@ -12,7 +12,7 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity
-public class ChangeOrder {
+public class PhoneNumber {
 
     @Id
     @Column(name = "ID")
@@ -20,16 +20,25 @@ public class ChangeOrder {
     @GenericGenerator(name = "increment", strategy = "increment")
     private int id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "requestType")
-    private RequestType requestType;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "phoneType")
+    private PhoneType phoneType;
 
-    @ManyToOne
-    @JoinColumn(name = "customerID", referencedColumnName = "ID", nullable = false)
-    private Customer customer;
+    @Basic
+    @Column(name = "phoneNum")
+    private String phoneNum;
+
+    @Basic
+    @Column(name = "cityCode")
+    private String cityCode;
+
+    @Basic
+    @Column(name = "countryCode")
+    private String countryCode;
 
 
-    public enum RequestType {
-        ACTIVE, INCHANGE, REFUNDED, SUSPENDED, DEACTIVATED
+    public enum PhoneType {
+        MOBILE, FAX
     }
+
 }

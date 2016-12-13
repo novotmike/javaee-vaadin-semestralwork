@@ -5,10 +5,16 @@ import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
+import cz.novotm60.model.dao.UserDao;
 import cz.novotm60.session.SessionHandler;
 import cz.novotm60.util.Utils;
 
+import javax.inject.Inject;
+
 public class LoginView extends MyView {
+
+    @Inject
+    UserDao userDao;
 
     public LoginView() {
         super();
@@ -72,7 +78,8 @@ public class LoginView extends MyView {
                 usernameField.validate();
                 passwordField.validate();
                 if (usernameField.isValid() && passwordField.isValid()) {
-                    if (SessionHandler.logInUser(usernameField.getValue(), passwordField.getValue())) {
+
+                    if (SessionHandler.logInUser(userDao.getByUsername(usernameField.getValue()), usernameField.getValue(), passwordField.getValue())) {
                         UI.getCurrent().getPage().reload();
                         new Notification("Přihlášení proběhlo úspěšně!").show(Page.getCurrent());
                     } else {

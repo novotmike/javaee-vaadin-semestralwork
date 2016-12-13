@@ -13,68 +13,68 @@ import javax.xml.ws.Service;
  * 2016-12-06T15:07:33.040+01:00
  * Generated source version: 3.1.8
  */
-@WebServiceClient(name = "CustomerDatabase",
-        wsdlLocation = "file:CustomerDatabase.wsdl",
+@WebServiceClient(name = "ServiceManager",
+        wsdlLocation = "file:ServiceManager.wsdl",
         targetNamespace = "http://www.cvut.cz/FEL/")
-public class CustomerDatabase extends Service {
+public class ServiceManager extends Service {
 
     public final static URL WSDL_LOCATION;
 
-    public final static QName SERVICE = new QName("http://www.cvut.cz/FEL/", "CustomerDatabase");
+    public final static QName SERVICE = new QName("http://www.cvut.cz/FEL/", "ServiceManager");
     public final static QName CustomerDatabaseSOAP = new QName("http://www.cvut.cz/FEL/", "CustomerDatabaseSOAP");
 
     static {
         URL url = null;
         try {
-            url = new URL("file:CustomerDatabase.wsdl");
+            url = new URL("file:ServiceManager.wsdl");
         } catch (MalformedURLException e) {
-            java.util.logging.Logger.getLogger(CustomerDatabase.class.getName())
+            java.util.logging.Logger.getLogger(ServiceManager.class.getName())
                     .log(java.util.logging.Level.INFO,
-                            "Can not initialize the default wsdl from {0}", "file:CustomerDatabase.wsdl");
+                            "Can not initialize the default wsdl from {0}", "file:ServiceManager.wsdl");
         }
         WSDL_LOCATION = url;
     }
 
-    public CustomerDatabase(URL wsdlLocation) {
+    public ServiceManager(URL wsdlLocation) {
         super(wsdlLocation, SERVICE);
     }
 
-    public CustomerDatabase(URL wsdlLocation, QName serviceName) {
+    public ServiceManager(URL wsdlLocation, QName serviceName) {
         super(wsdlLocation, serviceName);
     }
 
-    public CustomerDatabase() {
+    public ServiceManager() {
         super(WSDL_LOCATION, SERVICE);
     }
 
-    public CustomerDatabase(WebServiceFeature... features) {
+    public ServiceManager(WebServiceFeature... features) {
         super(WSDL_LOCATION, SERVICE, features);
     }
 
-    public CustomerDatabase(URL wsdlLocation, WebServiceFeature... features) {
+    public ServiceManager(URL wsdlLocation, WebServiceFeature... features) {
         super(wsdlLocation, SERVICE, features);
     }
 
-    public CustomerDatabase(URL wsdlLocation, QName serviceName, WebServiceFeature... features) {
+    public ServiceManager(URL wsdlLocation, QName serviceName, WebServiceFeature... features) {
         super(wsdlLocation, serviceName, features);
     }
 
 
     /**
-     * @return returns CustomerDatabaseWSDL
+     * @return returns ServiceManagerI
      */
     @WebEndpoint(name = "CustomerDatabaseSOAP")
-    public CustomerDatabaseWSDL getCustomerDatabaseSOAP() {
-        return super.getPort(CustomerDatabaseSOAP, CustomerDatabaseWSDL.class);
+    public ServiceManagerI getSOAP() {
+        return super.getPort(CustomerDatabaseSOAP, ServiceManagerI.class);
     }
 
     /**
      * @param features A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
-     * @return returns CustomerDatabaseWSDL
+     * @return returns ServiceManagerI
      */
     @WebEndpoint(name = "CustomerDatabaseSOAP")
-    public CustomerDatabaseWSDL getCustomerDatabaseSOAP(WebServiceFeature... features) {
-        return super.getPort(CustomerDatabaseSOAP, CustomerDatabaseWSDL.class, features);
+    public ServiceManagerI getCustomerDatabaseSOAP(WebServiceFeature... features) {
+        return super.getPort(CustomerDatabaseSOAP, ServiceManagerI.class, features);
     }
 
 }

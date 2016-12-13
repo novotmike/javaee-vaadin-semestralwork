@@ -13,8 +13,5 @@ public class Resource {
     @PersistenceContext
     @Produces
     private EntityManager em;
-
-    public void hmm() {
-
-    }
+    
 }

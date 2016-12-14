@@ -25,6 +25,14 @@ public class Customer {
     @Column(name = "customerID")
     private int customerID;
 
+    @Basic
+    @Column(name = "birthnum")
+    private String birthNum;
+
+    @Basic
+    @Column(name = "countryoforigin")
+    private String countryOfOrigin;
+
     @ElementCollection
     @OrderColumn(name = "firstname")
     private List<String> firstName;
@@ -35,7 +43,7 @@ public class Customer {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private CustomerStatus status;
+    private RequestType status;
 
     @OneToMany
     private List<Address> address;
@@ -46,7 +54,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<ChangeOrder> changeOrders;
 
-    public enum CustomerStatus {
-        ACTIVE, SUSPENDED, REFUND, INACTIVE
+    public enum RequestType {
+        ACTIVE, INCHANGE, REFUNDED, SUSPENDED, DEACTIVATED
     }
 }

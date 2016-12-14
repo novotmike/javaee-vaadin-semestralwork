@@ -22,7 +22,7 @@ public class ChangeOrder {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "requestType")
-    private RequestType requestType;
+    private Customer.RequestType requestType;
 
     @ManyToOne
     @JoinColumn(name = "customerID", referencedColumnName = "ID", nullable = false)
@@ -33,7 +33,4 @@ public class ChangeOrder {
     private boolean sent;
 
 
-    public enum RequestType {
-        ACTIVE, INCHANGE, REFUNDED, SUSPENDED, DEACTIVATED
-    }
 }

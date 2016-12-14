@@ -6,7 +6,10 @@ import cz.novotm60.model.entity.Customer;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,5 +38,13 @@ public class ChangeOrderDao {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
             return false;
         }
+    }
+
+    public Collection<ChangeOrder> getAll() {
+        CriteriaQuery q = entityManager.getCriteriaBuilder().createQuery(ChangeOrder.class);
+        Root<ChangeOrder> abstractRoot = q.from(ChangeOrder.class);
+        q.select(abstractRoot);
+        Collection<ChangeOrder> collection = entityManager.createQuery(q).getResultList();
+        return collection;
     }
 }

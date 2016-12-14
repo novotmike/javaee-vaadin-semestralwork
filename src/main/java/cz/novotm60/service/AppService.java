@@ -44,4 +44,12 @@ public class AppService {
         serviceManager.readCustomerDetails(id, status, detail);
     }
 
+    public CustomerDetailType getCustomerDetailType(CustomerType customerType) {
+        Holder<BigInteger> id = new Holder<>(customerType.getId());
+        Holder<String> status = new Holder<>();
+        Holder<CustomerDetailType> customerDetailTypeHolder = new Holder<>();
+        getCustomerDetail(id, status, customerDetailTypeHolder);
+        return customerDetailTypeHolder.value;
+    }
+
 }

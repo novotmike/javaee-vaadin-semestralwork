@@ -1,5 +1,7 @@
 package cz.novotm60.service.soap;
 
+import lombok.ToString;
+
 import java.math.BigInteger;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.XmlType;
         "id",
         "status"
 })
+
 public class CustomerType {
 
     @XmlElement(required = true)
@@ -102,6 +105,11 @@ public class CustomerType {
      */
     public void setStatus(String value) {
         this.status = value;
+    }
+
+    @Override
+    public String toString() {
+        return getId()+" "+getFirstName()+" "+getSurname();
     }
 
 }

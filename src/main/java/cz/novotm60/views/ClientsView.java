@@ -7,9 +7,11 @@ import cz.novotm60.model.dao.CustomerDao;
 import cz.novotm60.model.entity.Customer;
 import cz.novotm60.service.AppService;
 import cz.novotm60.service.soap.CustomerType;
+import cz.novotm60.views.windows.NewChangeOrderWindow;
 
 import javax.inject.Inject;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 public class ClientsView extends MyView{
 
@@ -58,6 +60,11 @@ public class ClientsView extends MyView{
         Button addNewButton = new Button("Vytvořit nový změnový požadavek");
         addNewButton.setWidth("100%");
         row.getItemProperty("change").setValue(addNewButton);
+
+        addNewButton.addClickListener(clickEvent -> {
+            ArrayList<CustomerType> customerTypes = (ArrayList<CustomerType>) appService.getAllCustomers(BigInteger.ZERO, BigInteger.TEN);
+            UI.getCurrent().addWindow(new NewChangeOrderWindow(customerTypes, customer));
+        });
     }
 
 }

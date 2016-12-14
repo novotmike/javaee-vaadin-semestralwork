@@ -1,6 +1,7 @@
 package cz.novotm60.util;
 
 import com.vaadin.ui.UI;
+import cz.novotm60.model.entity.Customer;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.NoSuchAlgorithmException;
@@ -34,6 +35,22 @@ public class Utils {
 
     public static String shaHash(String input) throws NoSuchAlgorithmException {
         return DigestUtils.sha256Hex(input);
+    }
+
+    public static String getCustomerFullName(Customer customer) {
+        String name = "";
+        for(String fname : customer.getFirstName()) {
+            name+=fname+" ";
+        }
+
+        for(int i = 0; i<customer.getSurName().size(); i++) {
+            if(i == customer.getSurName().size()-1) {
+                name+=customer.getSurName().get(i);
+            }else {
+                name+=customer.getSurName().get(i)+" ";
+            }
+        }
+        return name;
     }
 
 

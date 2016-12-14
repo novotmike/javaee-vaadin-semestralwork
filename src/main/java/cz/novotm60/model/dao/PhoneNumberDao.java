@@ -1,6 +1,6 @@
 package cz.novotm60.model.dao;
 
-import cz.novotm60.model.entity.Address;
+import cz.novotm60.model.entity.ChangeOrder;
 import cz.novotm60.model.entity.PhoneNumber;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -12,12 +12,12 @@ import java.util.logging.Logger;
 
 @ApplicationScoped
 @Transactional
-public class AddressDao {
+public class PhoneNumberDao {
 
     @Inject
     EntityManager entityManager;
 
-    public boolean addNew(Address entity) {
+    public boolean addNew(PhoneNumber entity) {
         try {
             entityManager.persist(entity);
             return true;
@@ -27,7 +27,7 @@ public class AddressDao {
         }
     }
 
-    public boolean delete(Address entity) {
+    public boolean delete(PhoneNumber entity) {
         try {
             entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
             return true;

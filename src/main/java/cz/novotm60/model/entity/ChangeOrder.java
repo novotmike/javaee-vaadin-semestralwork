@@ -28,6 +28,10 @@ public class ChangeOrder {
     @JoinColumn(name = "customerID", referencedColumnName = "ID", nullable = false)
     private Customer customer;
 
+    @Basic
+    @Column(name= "sent")
+    private boolean sent;
+
 
     public enum RequestType {
         ACTIVE, INCHANGE, REFUNDED, SUSPENDED, DEACTIVATED

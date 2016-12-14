@@ -10,15 +10,12 @@ import cz.novotm60.session.SessionHandler;
 import cz.novotm60.util.Utils;
 
 import javax.inject.Inject;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginView extends MyView {
 
     @Inject
     UserDao userDao;
-
-    public LoginView() {
-        super();
-    }
 
     @Override
     public Component getBody() {
@@ -48,7 +45,6 @@ public class LoginView extends MyView {
 
     @Override
     public Component generateBodyContent() {
-
         HorizontalLayout hr = new HorizontalLayout();
         hr.setWidth("100%");
         hr.setMargin(true);

@@ -1,14 +1,19 @@
 package cz.novotm60.views;
 
+import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import cz.novotm60.views.handlers.NavigationHandler;
+import cz.novotm60.util.Utils;
 
+import javax.annotation.PostConstruct;
+
+@CDIView
 public class MyView extends Panel implements View, IView{
 
-    public MyView() {
+    @PostConstruct
+    public void init() {
         this.setSizeFull();
         VerticalLayout vl = new VerticalLayout();
         vl.addComponents(getHeader(), getBody(), getFooter());
@@ -19,10 +24,10 @@ public class MyView extends Panel implements View, IView{
         Panel panel = new Panel();
         HorizontalLayout hr = new HorizontalLayout();
         hr.setSpacing(true);
-        Button showClients = new Button("Seznam klientů", clickEvent -> new NavigationHandler().handleShowAllClients());
-        Button showRequest = new Button("Seznam požadavků na změnu", clickEvent -> new NavigationHandler().handleShowAllRequests());
-        Button newRequest = new Button("Nový požadavek na změnu", clickEvent -> new NavigationHandler().handleCreateNewRequest());
-        Button logout = new Button("Odhlásit se", clickEvent -> new NavigationHandler().handleLogOut());
+        Button showClients = new Button("Seznam klientů", clickEvent -> UI.getCurrent().getNavigator().navigateTo(Utils.CLIENT_URI_FRAGMENT));
+        Button showRequest = new Button("Seznam požadavků na změnu", clickEvent -> UI.getCurrent().getNavigator().navigateTo(Utils.REQ_URI_FRAGMENT));
+        Button newRequest = new Button("Nový požadavek na změnu", clickEvent -> UI.getCurrent().getNavigator().navigateTo(Utils.NEW_REQ_URI_FRAGMENT));
+        Button logout = new Button("Odhlásit se", clickEvent -> UI.getCurrent().getNavigator().navigateTo("logout"));
         showClients.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         showRequest.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         newRequest.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
@@ -43,18 +48,12 @@ public class MyView extends Panel implements View, IView{
     }
 
     public Component getBody() {
-        HorizontalLayout container = new HorizontalLayout();
-        container.addStyleName("align-center");
-        container.setWidth("100%");
-        container.setMargin(true);
-        container.setSpacing(true);
-
         HorizontalLayout vl = new HorizontalLayout();
         vl.addStyleName("container");
+        vl.addStyleName("align-center");
+        vl.setWidth("100%");
         vl.addComponent(generateBodyContent());
-        container.addComponent(vl);
-        container.setComponentAlignment(vl, Alignment.MIDDLE_CENTER);
-        return container;
+        return vl;
     }
 
     public Component generateBodyContent() {
@@ -73,6 +72,9 @@ public class MyView extends Panel implements View, IView{
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
-
+        this.setSizeFull();
+        VerticalLayout vl = new VerticalLayout();
+        vl.addComponents(getHeader(), getBody(), getFooter());
+        setContent(vl);
     }
 }

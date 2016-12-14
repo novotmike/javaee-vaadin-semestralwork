@@ -20,9 +20,9 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 3.1.8
  *
  */
-@WebService(targetNamespace = "http://www.cvut.cz/FEL/", name = "ServiceManagerI")
+@WebService(targetNamespace = "http://www.cvut.cz/FEL/", name = "CustomerDatabaseWSDL")
 @XmlSeeAlso({ObjectFactory.class})
-public interface ServiceManagerI {
+public interface CustomerDatabaseWSDL {
 
     @WebMethod(operationName = "ReadCustomerDetails", action = "http://www.cvut.cz/FEL/ReadCustomerDetails")
     @RequestWrapper(localName = "ReadCustomerDetails", targetNamespace = "http://www.cvut.cz/FEL/", className = "cz.cvut.fel.ReadCustomerDetails")

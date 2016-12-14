@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 public class SessionHandler implements Serializable {
 
-    public static boolean logInUser(User user, String password, String username) {
+    public static boolean logInUser(User user, String username, String password) {
         if(user == null) {
             return false;
         }

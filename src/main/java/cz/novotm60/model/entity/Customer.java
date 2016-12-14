@@ -1,9 +1,6 @@
 package cz.novotm60.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.CollectionId;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -29,11 +26,11 @@ public class Customer {
     private int customerID;
 
     @ElementCollection
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OrderColumn(name = "firstname")
     private List<String> firstName;
 
     @ElementCollection
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OrderColumn(name = "lastname")
     private List<String> surName;
 
     @Enumerated(EnumType.STRING)

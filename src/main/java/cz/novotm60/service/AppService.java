@@ -3,8 +3,8 @@ package cz.novotm60.service;
 import cz.novotm60.service.soap.CreateCustomerChangeOrder;
 import cz.novotm60.service.soap.CustomerDetailType;
 import cz.novotm60.service.soap.CustomerType;
-import cz.novotm60.service.webservice.ServiceManager;
-import cz.novotm60.service.webservice.ServiceManagerI;
+import cz.novotm60.service.webservice.CustomerDatabase;
+import cz.novotm60.service.webservice.CustomerDatabaseWSDL;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
@@ -21,12 +21,12 @@ import java.util.logging.Logger;
 public class AppService {
 
     private java.net.URL URL;
-    private ServiceManagerI serviceManager;
+    private CustomerDatabaseWSDL serviceManager;
 
     public AppService() {
         try {
             URL = new URL("http://localhost:8088/mockCustomerDatabaseSOAP?WSDL");
-            serviceManager = new ServiceManager(URL).getSOAP();
+            serviceManager = new CustomerDatabase(URL).getSOAP();
         } catch (MalformedURLException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.INFO, "Wrong url!");
         }

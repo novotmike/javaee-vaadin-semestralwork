@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.List;
 
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class Customer {
 
     @Basic
     @Column(name = "customerID")
-    private int customerID;
+    private BigInteger customerID;
 
     @Basic
     @Column(name = "birthnum")
@@ -34,11 +35,11 @@ public class Customer {
     private String countryOfOrigin;
 
     @ElementCollection
-    @OrderColumn(name = "firstname")
+    @OrderColumn(name = "firstnames")
     private List<String> firstName;
 
     @ElementCollection
-    @OrderColumn(name = "lastname")
+    @OrderColumn(name = "lastnames")
     private List<String> surName;
 
     @Enumerated(EnumType.STRING)

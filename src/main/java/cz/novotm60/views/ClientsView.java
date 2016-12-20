@@ -3,7 +3,11 @@ package cz.novotm60.views;
 import com.vaadin.data.Item;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
+import cz.novotm60.model.dao.AddressDao;
+import cz.novotm60.model.dao.ChangeOrderDao;
 import cz.novotm60.model.dao.CustomerDao;
+import cz.novotm60.model.dao.PhoneNumberDao;
+import cz.novotm60.model.entity.ChangeOrder;
 import cz.novotm60.model.entity.Customer;
 import cz.novotm60.service.AppService;
 import cz.novotm60.service.soap.CustomerType;
@@ -17,6 +21,15 @@ public class ClientsView extends MyView{
 
     @Inject
     CustomerDao customerDao;
+
+    @Inject
+    AddressDao addressDao;
+
+    @Inject
+    PhoneNumberDao phoneNumberDao;
+
+    @Inject
+    ChangeOrderDao changeOrderDao;
 
     @Inject
     AppService appService;
@@ -63,7 +76,7 @@ public class ClientsView extends MyView{
 
         addNewButton.addClickListener(clickEvent -> {
             ArrayList<CustomerType> customerTypes = (ArrayList<CustomerType>) appService.getAllCustomers(BigInteger.ZERO, BigInteger.TEN);
-            UI.getCurrent().addWindow(new NewChangeOrderWindow(customerTypes, customer));
+            UI.getCurrent().addWindow(new NewChangeOrderWindow(customer, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao));
         });
     }
 

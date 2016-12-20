@@ -3,26 +3,52 @@ package cz.novotm60.views;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
+import cz.novotm60.model.dao.AddressDao;
+import cz.novotm60.model.dao.ChangeOrderDao;
+import cz.novotm60.model.dao.CustomerDao;
+import cz.novotm60.model.dao.PhoneNumberDao;
+import cz.novotm60.model.entity.Address;
+import cz.novotm60.model.entity.ChangeOrder;
 import cz.novotm60.model.entity.Customer;
 import cz.novotm60.model.entity.PhoneNumber;
 import cz.novotm60.service.AppService;
+import cz.novotm60.service.soap.AddressType;
 import cz.novotm60.service.soap.CustomerDetailType;
 import cz.novotm60.service.soap.CustomerType;
+import cz.novotm60.service.soap.PhoneType;
+import cz.novotm60.util.Utils;
 
 
 import javax.inject.Inject;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NewRequirementView extends MyView {
 
     @Inject
     AppService appService;
 
+    @Inject
+    AddressDao addresDao;
+
+    @Inject
+    CustomerDao customerDao;
+
+    @Inject
+    PhoneNumberDao phoneNumberDao;
+
+    @Inject
+    ChangeOrderDao changeOrderDao;
+
     private ComboBox clientCombobox, choCombobox;
     private CustomerType customerType = null;
     private GridLayout form;
     private VerticalLayout layout;
+    private TextField firstNameField, lastNameField, birthNum, countryOO;
+    private TextField streetName, streetNum, postalCode, city, cityCode, county, country;
+    private TextField phoneNum, cityCodeP, countryCode;
+    private ComboBox phoneTypeCombobox;
 
     @Override
     public Component generateBodyContent() {
@@ -75,8 +101,87 @@ public class NewRequirementView extends MyView {
 
         Button saveButton = new Button("Uložit", clickEvent -> {
             if (clientCombobox.getValue() != null && choCombobox.getValue() != null) {
-                System.out.println("SAVIG");
-            }else {
+
+                if (choCombobox.getValue() == Customer.RequestType.INCHANGE) {
+                    Address a = new Address();
+                    a.setStreetName(streetName.getValue());
+                    a.setStreetNum(streetNum.getValue());
+                    a.setPostalCode(postalCode.getValue());
+                    a.setCity(city.getValue());
+                    a.setCityPart(cityCode.getValue());
+                    a.setCounty(county.getValue());
+                    a.setCountry(country.getValue());
+                    addresDao.addNew(a);
+                    PhoneNumber p = new PhoneNumber();
+                    p.setCityCode(cityCodeP.getValue());
+                    p.setCountryCode(countryCode.getValue());
+                    p.setPhoneNum(phoneNum.getValue());
+                    p.setPhoneType((PhoneNumber.PhoneType) phoneTypeCombobox.getValue());
+                    phoneNumberDao.addNew(p);
+
+                    Customer c = new Customer();
+                    ArrayList<Address> addresses = new ArrayList<>();
+                    addresses.add(a);
+                    c.setAddress(addresses);
+                    ArrayList<PhoneNumber> phones = new ArrayList<>();
+                    phones.add(p);
+                    c.setPhoneNumber(phones);
+                    c.setBirthNum(birthNum.getValue());
+                    c.setCountryOfOrigin(countryOO.getValue());
+                    c.setFirstName(new ArrayList<String>(Arrays.asList(firstNameField.getValue().split("\\s+"))));
+                    c.setSurName(new ArrayList<String>(Arrays.asList(lastNameField.getValue().split("\\s+"))));
+                    c.setCustomerID(((CustomerType) clientCombobox.getValue()).getId());
+                    c.setStatus((Customer.RequestType) choCombobox.getValue());
+                    customerDao.addNew(c);
+
+                    ChangeOrder cho = new ChangeOrder();
+                    cho.setCustomer(c);
+                    cho.setRequestType((Customer.RequestType) choCombobox.getValue());
+                    cho.setSent(false);
+                    changeOrderDao.addNew(cho);
+                    UI.getCurrent().getNavigator().navigateTo(Utils.REQ_URI_FRAGMENT);
+                } else {
+                    CustomerDetailType customerDetail = appService.getCustomerDetailType((CustomerType) clientCombobox.getValue());
+                    AddressType at = customerDetail.getAddress().get(customerDetail.getAddress().size() - 1);
+                    PhoneType pt = customerDetail.getPhoneNum().get(customerDetail.getAddress().size() - 1);
+                    Address a = new Address();
+                    a.setStreetName(at.getStreetName());
+                    a.setStreetNum(at.getStreetNum());
+                    a.setPostalCode(at.getPostalCode());
+                    a.setCity(at.getCity());
+                    a.setCityPart(at.getCityPart());
+                    a.setCounty(at.getCounty());
+                    a.setCountry(at.getCountry());
+                    addresDao.addNew(a);
+                    PhoneNumber p = new PhoneNumber();
+                    p.setCityCode(pt.getCityCode());
+                    p.setCountryCode(pt.getCountryCode());
+                    p.setPhoneNum(pt.getPhoneNum());
+                    p.setPhoneType(PhoneNumber.PhoneType.values()[pt.getPhoneNumberType().intValue()]);
+                    phoneNumberDao.addNew(p);
+
+                    Customer c = new Customer();
+                    ArrayList<Address> addresses = new ArrayList<>();
+                    addresses.add(a);
+                    c.setAddress(addresses);
+                    ArrayList<PhoneNumber> phones = new ArrayList<>();
+                    phones.add(p);
+                    c.setPhoneNumber(phones);
+                    c.setBirthNum(customerDetail.getBirthNum());
+                    c.setCountryOfOrigin(customerDetail.getCountryOfOrigin());
+                    c.setFirstName(customerDetail.getFirstName());
+                    c.setSurName(customerDetail.getSurname());
+                    c.setCustomerID(((CustomerType) clientCombobox.getValue()).getId());
+                    c.setStatus((Customer.RequestType) choCombobox.getValue());
+                    customerDao.addNew(c);
+                    ChangeOrder cho = new ChangeOrder();
+                    cho.setCustomer(c);
+                    cho.setRequestType((Customer.RequestType) choCombobox.getValue());
+                    cho.setSent(false);
+                    changeOrderDao.addNew(cho);
+                    UI.getCurrent().getNavigator().navigateTo(Utils.REQ_URI_FRAGMENT);
+                }
+            } else {
                 new Notification("Není zvolen klient nebo typ změny.").show(Page.getCurrent());
             }
         });
@@ -125,43 +230,43 @@ public class NewRequirementView extends MyView {
     }
 
     public void showForm() {
-        TextField firstNameField = new TextField();
+        firstNameField = new TextField();
         firstNameField.setInputPrompt("Jmeno/a");
 
-        TextField lastNameField = new TextField();
+        lastNameField = new TextField();
         lastNameField.setInputPrompt("Přijmení");
 
-        TextField birthNum = new TextField();
+        birthNum = new TextField();
         birthNum.setInputPrompt("Rodné číslo");
-        TextField countryOO = new TextField();
+        countryOO = new TextField();
         countryOO.setInputPrompt("Stát narození");
 
         //Address
-        TextField streetName = new TextField();
+        streetName = new TextField();
         streetName.setInputPrompt("Ulice");
-        TextField streetNum = new TextField();
+        streetNum = new TextField();
         streetNum.setInputPrompt("Číslo popisné");
-        TextField postalCode = new TextField();
+        postalCode = new TextField();
         postalCode.setInputPrompt("PSČ");
-        TextField city = new TextField();
+        city = new TextField();
         city.setInputPrompt("Město");
-        TextField cityCode = new TextField();
+        cityCode = new TextField();
         cityCode.setInputPrompt("Část města");
-        TextField county = new TextField();
+        county = new TextField();
         county.setInputPrompt("Kraj");
-        TextField country = new TextField();
+        country = new TextField();
         country.setInputPrompt("Stát");
 
         //Phone
-        ComboBox phoneTypeCombobox = new ComboBox("Typ telefonu");
+        phoneTypeCombobox = new ComboBox("Typ telefonu");
         phoneTypeCombobox.setImmediate(true);
         phoneTypeCombobox.addItem(PhoneNumber.PhoneType.MOBILE);
         phoneTypeCombobox.addItem(PhoneNumber.PhoneType.FAX);
-        TextField phoneNum = new TextField();
+        phoneNum = new TextField();
         phoneNum.setInputPrompt("Číslo");
-        TextField cityCodeP = new TextField();
+        cityCodeP = new TextField();
         cityCodeP.setInputPrompt("Předčíslí města");
-        TextField countryCode = new TextField();
+        countryCode = new TextField();
         countryCode.setInputPrompt("Předčíslí země");
 
         form.addComponents(firstNameField, lastNameField, birthNum, countryOO);
@@ -172,8 +277,40 @@ public class NewRequirementView extends MyView {
         if (clientCombobox.getValue() != null) {
             //Map values
             CustomerDetailType detailType = appService.getCustomerDetailType((CustomerType) clientCombobox.getValue());
-        }
+            //Person
+            for (String s : detailType.getFirstName()) {
+                String name = s + " ";
+                firstNameField.setValue(firstNameField.getValue() + name);
+            }
 
+            for (String s : detailType.getSurname()) {
+                String name = s + " ";
+                lastNameField.setValue(lastNameField.getValue() + name);
+            }
+
+            birthNum.setValue(detailType.getBirthNum());
+            countryOO.setValue(detailType.getCountryOfOrigin());
+
+            //Address
+            if (!detailType.getAddress().isEmpty()) {
+                AddressType addressType = detailType.getAddress().get(detailType.getAddress().size() - 1);
+                streetName.setValue(addressType.getStreetName());
+                streetNum.setValue(addressType.getStreetNum());
+                postalCode.setValue(addressType.getPostalCode());
+                city.setValue(addressType.getCity());
+                cityCode.setValue(addressType.getCityPart());
+                county.setValue(addressType.getCounty());
+                country.setValue(addressType.getCountry());
+            }
+
+            if (!detailType.getPhoneNum().isEmpty()) {
+                PhoneType phoneType = detailType.getPhoneNum().get(detailType.getPhoneNum().size() - 1);
+                phoneNum.setValue(phoneType.getPhoneNum());
+                cityCodeP.setValue(phoneType.getCityCode());
+                countryCode.setValue(phoneType.getCountryCode());
+                phoneTypeCombobox.select(PhoneNumber.PhoneType.values()[phoneType.getPhoneNumberType().intValue()]);
+            }
+        }
     }
 
     public void hideForm() {

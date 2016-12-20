@@ -18,20 +18,19 @@ import java.util.ArrayList;
 
 public class NewChangeOrderWindow extends Window {
 
-    public NewChangeOrderWindow(CustomerType customerType,AppService appService, CustomerDao customerDao, AddressDao addressDao, PhoneNumberDao phoneNumberDao, ChangeOrderDao changeOrderDao) {
-        if(addressDao == null) {
-            System.out.println("SHAME");
-        }
+    public NewChangeOrderWindow(CustomerType customerType, AppService appService, CustomerDao customerDao, AddressDao addressDao, PhoneNumberDao phoneNumberDao, ChangeOrderDao changeOrderDao) {
         this.setClosable(true);
         setModal(true);
         setDraggable(false);
-        setWidth("90%");
+        setWidth("60%");
         setHeight("95%");
         this.setCaption("Nový požadavek na změnu");
         HorizontalLayout vl = new HorizontalLayout();
+        vl.setMargin(true);
+        vl.setSpacing(true);
         vl.addStyleName("align-center");
         vl.setWidth("100%");
-        ChangeOrderForm chf = new ChangeOrderForm(customerType, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao);
+        ChangeOrderForm chf = new ChangeOrderForm(customerType, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao, this);
         vl.addComponent(chf);
         vl.setComponentAlignment(chf, Alignment.MIDDLE_CENTER);
         setContent(vl);

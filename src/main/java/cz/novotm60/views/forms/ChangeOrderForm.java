@@ -37,18 +37,20 @@ public class ChangeOrderForm extends VerticalLayout{
     private GridLayout form;
     private ComboBox clientCombobox, choCombobox;
     private GridLayout gridLayout;
+    private Window window;
 
     public ChangeOrderForm(AppService appService, CustomerDao customerDao, AddressDao addressDao, PhoneNumberDao phoneNumberDao, ChangeOrderDao changeOrderDao) {
-        this(null, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao);
+        this(null, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao, null);
     }
 
-    public ChangeOrderForm(CustomerType customerType, AppService appService, CustomerDao customerDao, AddressDao addressDao, PhoneNumberDao phoneNumberDao, ChangeOrderDao changeOrderDao) {
+    public ChangeOrderForm(CustomerType customerType, AppService appService, CustomerDao customerDao, AddressDao addressDao, PhoneNumberDao phoneNumberDao, ChangeOrderDao changeOrderDao, Window window) {
         this.appService = appService;
         this.customerDao = customerDao;
         this.addressDao = addressDao;
         this.phoneNumberDao = phoneNumberDao;
         this.changeOrderDao = changeOrderDao;
         this.customerType = customerType;
+        this.window = window;
         gridLayout = new GridLayout(2, 1);
         gridLayout.setSpacing(true);
         gridLayout.setWidth("100%");
@@ -136,6 +138,8 @@ public class ChangeOrderForm extends VerticalLayout{
                     cho.setRequestType((Customer.RequestType) choCombobox.getValue());
                     cho.setSent(false);
                     changeOrderDao.addNew(cho);
+                    if(window != null)
+                        window.close();
                     UI.getCurrent().getNavigator().navigateTo(Utils.REQ_URI_FRAGMENT);
                 } else {
                     CustomerDetailType customerDetail;
@@ -186,10 +190,53 @@ public class ChangeOrderForm extends VerticalLayout{
                     cho.setRequestType((Customer.RequestType) choCombobox.getValue());
                     cho.setSent(false);
                     changeOrderDao.addNew(cho);
+                    if(window != null)
+                        window.close();
                     UI.getCurrent().getNavigator().navigateTo(Utils.REQ_URI_FRAGMENT);
                 }
             } else {
-                new Notification("Není zvolen klient nebo typ změny.").show(Page.getCurrent());
+                if(choCombobox.getValue() == Customer.RequestType.ACTIVE) {
+                    Address a = new Address();
+                    a.setStreetName(streetName.getValue());
+                    a.setStreetNum(streetNum.getValue());
+                    a.setPostalCode(postalCode.getValue());
+                    a.setCity(city.getValue());
+                    a.setCityPart(cityCode.getValue());
+                    a.setCounty(county.getValue());
+                    a.setCountry(country.getValue());
+                    addressDao.addNew(a);
+                    PhoneNumber p = new PhoneNumber();
+                    p.setCityCode(cityCodeP.getValue());
+                    p.setCountryCode(countryCode.getValue());
+                    p.setPhoneNum(phoneNum.getValue());
+                    p.setPhoneType((PhoneNumber.PhoneType) phoneTypeCombobox.getValue());
+                    phoneNumberDao.addNew(p);
+
+                    Customer c = new Customer();
+                    ArrayList<Address> addresses = new ArrayList<>();
+                    addresses.add(a);
+                    c.setAddress(addresses);
+                    ArrayList<PhoneNumber> phones = new ArrayList<>();
+                    phones.add(p);
+                    c.setPhoneNumber(phones);
+                    c.setBirthNum(birthNum.getValue());
+                    c.setCountryOfOrigin(countryOO.getValue());
+                    c.setFirstName(new ArrayList<String>(Arrays.asList(firstNameField.getValue().split("\\s+"))));
+                    c.setSurName(new ArrayList<String>(Arrays.asList(lastNameField.getValue().split("\\s+"))));
+                    c.setStatus((Customer.RequestType) choCombobox.getValue());
+                    customerDao.addNew(c);
+
+                    ChangeOrder cho = new ChangeOrder();
+                    cho.setCustomer(c);
+                    cho.setRequestType((Customer.RequestType) choCombobox.getValue());
+                    cho.setSent(false);
+                    changeOrderDao.addNew(cho);
+                    if(window != null)
+                        window.close();
+                    UI.getCurrent().getNavigator().navigateTo(Utils.REQ_URI_FRAGMENT);
+                }else {
+                    new Notification("Není zvolen klient nebo typ změny.").show(Page.getCurrent());
+                }
             }
         });
         this.addComponent(saveButton);

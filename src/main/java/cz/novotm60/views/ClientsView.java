@@ -10,14 +10,16 @@ import cz.novotm60.model.dao.PhoneNumberDao;
 import cz.novotm60.model.entity.ChangeOrder;
 import cz.novotm60.model.entity.Customer;
 import cz.novotm60.service.AppService;
+import cz.novotm60.service.soap.CustomerDetailType;
 import cz.novotm60.service.soap.CustomerType;
+import cz.novotm60.views.windows.CustomerDetailWindow;
 import cz.novotm60.views.windows.NewChangeOrderWindow;
 
 import javax.inject.Inject;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-public class ClientsView extends MyView{
+public class ClientsView extends MyView {
 
     @Inject
     CustomerDao customerDao;
@@ -51,12 +53,13 @@ public class ClientsView extends MyView{
         table.addContainerProperty("first", String.class, null);
         table.addContainerProperty("last", String.class, null);
         table.addContainerProperty("id", String.class, null);
+        table.addContainerProperty("detail", Button.class, null);
         table.addContainerProperty("change", Button.class, null);
-        table.setColumnHeaders(new String[]{"Jméno", "Příjmení", "ID Klienta", "Nový změnový požadavek"});
+        table.setColumnHeaders(new String[]{"Jméno", "Příjmení", "ID Klienta", "Detail", "Nový změnový požadavek"});
         table.setColumnReorderingAllowed(false);
 
         verticalLayout.addComponent(table);
-        for(CustomerType c : appService.getAllCustomers(BigInteger.ONE, BigInteger.TEN)) {
+        for (CustomerType c : appService.getAllCustomers(BigInteger.ONE, BigInteger.TEN)) {
             addCustomerToDatabase(c);
         }
 
@@ -72,11 +75,18 @@ public class ClientsView extends MyView{
         row.getItemProperty("id").setValue(customer.getId().toString());
         Button addNewButton = new Button("Vytvořit nový změnový požadavek");
         addNewButton.setWidth("100%");
+        Button customerDetail = new Button("Detail");
+        customerDetail.setWidth("100%");
+        row.getItemProperty("detail").setValue(customerDetail);
         row.getItemProperty("change").setValue(addNewButton);
 
         addNewButton.addClickListener(clickEvent -> {
-            ArrayList<CustomerType> customerTypes = (ArrayList<CustomerType>) appService.getAllCustomers(BigInteger.ZERO, BigInteger.TEN);
+            //ArrayList<CustomerType> customerTypes = (ArrayList<CustomerType>) appService.getAllCustomers(BigInteger.ZERO, BigInteger.TEN);
             UI.getCurrent().addWindow(new NewChangeOrderWindow(customer, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao));
+        });
+
+        customerDetail.addClickListener(clickEvent -> {
+            UI.getCurrent().addWindow(new CustomerDetailWindow(customer, appService, customerDao, addressDao, phoneNumberDao, changeOrderDao));
         });
     }
 

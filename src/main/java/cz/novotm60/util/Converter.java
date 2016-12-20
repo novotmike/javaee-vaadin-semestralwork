@@ -60,11 +60,11 @@ public class Converter {
     }
 
 
-    public static CreateCustomerChangeOrder createCustomerChangeOrder(ChangeOrder changeOrder, Customer customer) {
+    public static CreateCustomerChangeOrder createCustomerChangeOrder(ChangeOrder changeOrder) {
         CreateCustomerChangeOrder create = new CreateCustomerChangeOrder();
         create.setRequestType(changeOrder.getRequestType().name());
         create.setId(BigInteger.valueOf(changeOrder.getId()));
-        create.setCustomer(customerDetailTypeFromCustomer(customer));
+        create.setCustomer(customerDetailTypeFromCustomer(changeOrder.getCustomer()));
         return create;
     }
 

@@ -30,6 +30,16 @@ public class ChangeOrderDao {
         }
     }
 
+    public boolean update(ChangeOrder entity) {
+        try {
+            entityManager.merge(entity);
+            return true;
+        }catch(Exception ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, ex.getMessage());
+            return false;
+        }
+    }
+
     public boolean delete(ChangeOrder entity) {
         try {
             entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
